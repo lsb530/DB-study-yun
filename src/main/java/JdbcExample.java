@@ -123,8 +123,6 @@ public class JdbcExample {
                 log.info("result: {}", employee);
                 target = employee;
             }
-
-            // 3월 6일 오전에 Join 쿼리 새로운 Example 만들어서 추가, 트랜잭션, JDBC Template
         } catch (SQLException e) {
             log.error(e.getMessage());
             throw e;
