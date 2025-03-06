@@ -1,5 +1,9 @@
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import request.Department;
+import request.EmployeeCreateRequest;
+import request.EmployeeUpdateRequest;
+import response.EmployeeResponse;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -44,7 +48,7 @@ public class JdbcExample {
             }
 
             log.debug("직원 단건 조회2");
-            // EmployeeResponse findEmployee2 = getEmployeeById2(connection, 99L);
+            // response.EmployeeResponse findEmployee2 = getEmployeeById2(connection, 99L);
             // log.info("result: {}", findEmployee2);
             try {
                 getEmployeeById2(connection, 99L);
@@ -81,7 +85,7 @@ public class JdbcExample {
             }
 
             log.debug("직원 수정2");
-            // updateEmployee2(connection, target.getId(), new EmployeeUpdateRequest(null, 100_000));
+            // updateEmployee2(connection, target.getId(), new request.EmployeeUpdateRequest(null, 100_000));
             log.debug("데이터 수정 후 직원 전체 조회");
             for (EmployeeResponse employee : getEmployees(connection, "id", "name", "position", "salary")) {
                 log.info("result: {}", employee);
@@ -89,7 +93,7 @@ public class JdbcExample {
             }
 
             log.debug("직원 수정3");
-            // updateEmployee3(connection, target.getId(), new EmployeeUpdateRequest(null, 100_000));
+            // updateEmployee3(connection, target.getId(), new request.EmployeeUpdateRequest(null, 100_000));
             log.debug("데이터 수정 후 직원 전체 조회");
             for (EmployeeResponse employee : getEmployees(connection, "id", "name", "position", "salary")) {
                 log.info("result: {}", employee);

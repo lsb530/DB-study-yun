@@ -1,3 +1,5 @@
+package response;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -5,10 +7,11 @@ import lombok.ToString;
 @Getter
 @AllArgsConstructor
 @ToString
-public class EmployeeCreateRequest {
+public class EmployeeDepartmentResponse {
+    private Long id;
     private String name;
-    private Integer age;
+    private int age;
     private String position;
-    private Integer salary;
-    private Department department;
+    private int salary;
+    private String departmentName;
 }
