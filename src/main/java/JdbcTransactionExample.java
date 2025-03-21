@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Slf4j
 public class JdbcTransactionExample {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException, InterruptedException {
         Connection connection = null;
         try {
             connection = getConnection();
@@ -26,16 +26,18 @@ public class JdbcTransactionExample {
                 log.info("result: {}", employee);
             }
 
-            log.debug("직원 단건 조회");
-            Optional<EmployeeResponse> findEmployee = getEmployeeById(connection, 1L);
-            findEmployee.ifPresentOrElse(response -> log.info("result: {}", response), () -> log.warn("데이터 없음"));
+            // log.debug("직원 단건 조회");
+            // Optional<EmployeeResponse> findEmployee = getEmployeeById(connection, 1L);
+            // findEmployee.ifPresentOrElse(response -> log.info("result: {}", response), () -> log.warn("데이터 없음"));
+            //
+            // log.debug("직원 추가");
+            // insertEmployee(connection, new EmployeeCreateRequest("Hello", 30, "Something Engineer", 12345, Department.IT));
+            // log.debug("데이터 삽입 후 직원 전체 조회");
+            // for (EmployeeResponse employee : getEmployees(connection)) {
+            //     log.info("result: {}", employee);
+            // }
 
-            log.debug("직원 추가");
-            insertEmployee(connection, new EmployeeCreateRequest("Hello", 30, "Something Engineer", 12345, Department.IT));
-            log.debug("데이터 삽입 후 직원 전체 조회");
-            for (EmployeeResponse employee : getEmployees(connection)) {
-                log.info("result: {}", employee);
-            }
+            Thread.sleep(5000);
         } catch (SQLException e) {
             assert connection != null;
             connection.rollback();
