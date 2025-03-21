@@ -1,4 +1,5 @@
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import request.Department;
 import request.EmployeeCreateRequest;
 import response.EmployeeResponse;
@@ -26,18 +27,28 @@ public class JdbcTransactionExample {
                 log.info("result: {}", employee);
             }
 
-            // log.debug("직원 단건 조회");
-            // Optional<EmployeeResponse> findEmployee = getEmployeeById(connection, 1L);
-            // findEmployee.ifPresentOrElse(response -> log.info("result: {}", response), () -> log.warn("데이터 없음"));
-            //
-            // log.debug("직원 추가");
-            // insertEmployee(connection, new EmployeeCreateRequest("Hello", 30, "Something Engineer", 12345, Department.IT));
-            // log.debug("데이터 삽입 후 직원 전체 조회");
-            // for (EmployeeResponse employee : getEmployees(connection)) {
-            //     log.info("result: {}", employee);
-            // }
+            log.debug("직원 단건 조회");
+            Optional<EmployeeResponse> findEmployee = getEmployeeById(connection, 1L);
+            findEmployee.ifPresentOrElse(response -> log.info("result: {}", response), () -> log.warn("데이터 없음"));
 
-            Thread.sleep(5000);
+            // --- OK
+            try {
+                log.debug("직원 추가");
+                insertEmployee(connection, new EmployeeCreateRequest("Hello", 30, "Something Engineer", 12345, Department.IT));
+                log.debug("데이터 삽입 후 직원 전체 조회");
+                for (EmployeeResponse employee : getEmployees(connection)) {
+                    log.info("result: {}", employee);
+                }
+            } catch (Exception e) {
+                connection.rollback();
+            }
+            // --- Problem
+
+            // connection.commit();
+
+            // Commit -> DB save: O
+            // Commit(X), Rollback -> DB save: X
+            Thread.sleep(10000);
         } catch (SQLException e) {
             assert connection != null;
             connection.rollback();
@@ -123,7 +134,7 @@ public class JdbcTransactionExample {
 
     private static Connection getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/rdb_study_test", "root", "password");
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/rdb_study", "root", "password");
     }
 
 }
